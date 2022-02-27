@@ -1,16 +1,21 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 import userReducer from './reducers/user.slice';
+import { postAPI } from './services/post.service';
 
 
 const rootReducer = combineReducers({
-  userReducer
+  userReducer,
+  [postAPI.reducerPath]: postAPI.reducer,
 });
 
 
 export function setupStore() {
   return configureStore({
-    reducer: rootReducer
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) => {
+      return getDefaultMiddleware().concat(postAPI.middleware);
+    }
   })
 }
 
